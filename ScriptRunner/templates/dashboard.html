@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+    <title>ScriptRunner - Dashboard</title>
+</head>
+
+<body>
+    <h1>Runners</h1>
+    {% for key, value in runners.items() %}
+        {{ key }}: {{ value }}  <a href="dashboard/{{ key }}"><button>Advanced Dashboard</button></a><a href="dashboard/{{ key }}/{{ 'stop' if value=='on' else 'start' }}"><button>{{ 'Stop' if value=='on' else 'Start' }}</button></a><br />
+    {% endfor %}
+</body>
+</html>

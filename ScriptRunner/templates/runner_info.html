@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+    <title>Runner {{ name }} Info</title>
+</head>
+<body>
+    <h1>Runner {{ name }} Info</h1>
+    <p>Time spent running</p>
+    {{ time }} <br />
+    {{ stopped }}
+    <div style="display: inline-block">
+        <img class="responsive" src="{{ ram_usage }}" alt="RAM Usage">
+        <img class="responsive" src="{{ cpu_usage }}" alt="CPU Usage">
+    </div>
+</body>
+</html>

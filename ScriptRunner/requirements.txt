@@ -1,0 +1,6 @@
+psutil
+matplotlib
+flask
+werkzeug
+flask-limiter
+flask_httpauth

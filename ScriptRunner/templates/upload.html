@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+    <title>ScriptRunner - Create</title>
+</head>
+
+<body>
+    <form method=post enctype=multipart/form-data>
+        <h1>Runner info</h1>
+        <input type="text" name=name placeholder="Runner Name">
+        <p style="color:red">{{ ERROR_NAME }}</p>
+
+        <h1>Upload Script File</h1>
+        <input type=file name=script>
+        <p style="color:red">{{ ERROR_SCRIPT }}</p>
+
+        <h1>Packages</h1>
+        <input type=file name=requirements>
+        <p style="color:red">{{ ERROR_REQUIREMENTS }}</p>
+        <br /> <br />
+
+        <input type=submit value=Upload>
+    </form>
+</body>
+
+<footer>
+
+</footer>
+</html>

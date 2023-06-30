@@ -13,18 +13,20 @@ import os
 DEFAULT = "default"
 
 
-def install(*packages):
-    reqs_version_specified = {d.project_name + "==" + d.version for d in pkg_resources.working_set}
-    reqs_version_not_specified = {d.project_name for d in pkg_resources.working_set}
+def install(runner_path: str, *packages):
+    ## TODO: use venv!
+    #reqs_version_specified = {d.project_name + "==" + d.version for d in pkg_resources.working_set}
+    #reqs_version_not_specified = {d.project_name for d in pkg_resources.working_set}
 
-    reqs_not_satisfied = []
+    #reqs_not_satisfied = []
 
-    for package in packages:
-        if package not in reqs_version_specified or package not in reqs_version_not_specified:
-            reqs_not_satisfied.append(package)
+    #for package in packages:
+    #    if package not in reqs_version_specified or package not in reqs_version_not_specified:
+    #        reqs_not_satisfied.append(package)
 
-    for req in reqs_not_satisfied:
-        subprocess.call([sys.executable, "-m", "pip", "install", req])
+    for req in packages: # reqs_not_satisfied:
+        #subprocess.call([sys.executable, "-m", "pip", "install", req])
+        subprocess.call([f"{runner_path}/venv/pip", "install", req])
 
 
 class Runner:
@@ -40,7 +42,8 @@ class Runner:
 
         self.process = None
 
-        install(*self.packages)
+        self.runner_path = '/'.join(file.split("/")[:-1]) # remove script name
+        install(self.runner_path, *self.packages)
 
     def run(self):
         # print(self.file.split("/" if "/" in self.file else "\\")[-2])
@@ -49,7 +52,7 @@ class Runner:
 
         self.process = subprocess.Popen(
             [
-                sys.executable,
+                sys.executable, # TODO: use venv!
                 *self.args,
                 self.file,
             ],

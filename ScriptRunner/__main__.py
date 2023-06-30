@@ -13,4 +13,5 @@ args.add_argument("--port", default=2122)
 args = args.parse_args()
 
 if __name__ == '__main__':
+    # maybe use wsgi
     app.run(debug=False, host=args.host, port=args.port)

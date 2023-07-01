@@ -7,13 +7,34 @@ import pkg_resources
 import subprocess
 import sqlite3
 import psutil
+import venv
 import sys
 import os
 
 DEFAULT = "default"
 
 
-def install(runner_path: str, *packages):
+class EnvWithPackages(EnvBuilder):
+    def __init__(self, *args, **kwargs):
+        self.venv_dir = kwargs.pop('venv_dir', None)
+        self.packages = kwargs.pop('packages', [])
+
+        # Always include pip since it's needed to insall packages
+        kwargs["with_pip"] = True
+        super().__init__(*args, **kwargs)
+
+
+    def post_setup(self, context):
+        super().post_setup(context)
+        
+        # Activate the virtual environment and install packages
+        # TODO: test (for linux espacially)
+        activate_script = self.venv_dir + ('/Scripts/activate.bat' if sys.platform == 'win32' else '/bin/activate')
+        activate_cmd = f"{activate_script} && pip install {' '.join(packages)}"
+        subprocess.check_call(activate_cmd, shell=True)
+
+
+def create_venv(runner_path: str, *packages):
     ## TODO: use venv!
     #reqs_version_specified = {d.project_name + "==" + d.version for d in pkg_resources.working_set}
     #reqs_version_not_specified = {d.project_name for d in pkg_resources.working_set}
@@ -24,9 +45,10 @@ def install(runner_path: str, *packages):
     #    if package not in reqs_version_specified or package not in reqs_version_not_specified:
     #        reqs_not_satisfied.append(package)
 
-    for req in packages: # reqs_not_satisfied:
-        #subprocess.call([sys.executable, "-m", "pip", "install", req])
-        subprocess.call([f"{runner_path}/venv/pip", "install", req])
+    #for req in packages: # reqs_not_satisfied:
+    #    #subprocess.call([sys.executable, "-m", "pip", "install", req])
+    #    subprocess.call([f"{runner_path}/venv/pip", "install", req])
+    EnvWithPackages(venv_dir=runner_path+"/venv/", packages=packages).create(runner_path+"/venv/") # TODO: test this
 
 
 class Runner:
@@ -43,7 +65,7 @@ class Runner:
         self.process = None
 
         self.runner_path = '/'.join(file.split("/")[:-1]) # remove script name
-        install(self.runner_path, *self.packages)
+        create_venv(self.runner_path, *self.packages)
 
     def run(self):
         # print(self.file.split("/" if "/" in self.file else "\\")[-2])

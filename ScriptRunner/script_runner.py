@@ -48,7 +48,7 @@ def create_venv(runner_path: str, *packages):
     #for req in packages: # reqs_not_satisfied:
     #    #subprocess.call([sys.executable, "-m", "pip", "install", req])
     #    subprocess.call([f"{runner_path}/venv/pip", "install", req])
-    EnvWithPackages(venv_dir=runner_path+"/venv/", packages=packages).create(runner_path+"/venv/") # TODO: test this
+    EnvWithPackages(venv_dir=runner_path+"/venv", packages=packages).create(runner_path+"/venv/") # TODO: test this
 
 
 class Runner:
